@@ -5,12 +5,14 @@ let ioService = null;
 let pwmCharacteristic = null;
 let ledService = null;
 let ledCharacteristic = null;
+let ioCharacteristic = null;
 
 let paired = false;
 // let pinAdCharacteristic = null;
 
 const IO_PIN_SERVICE = "E95D127B-251D-470A-A062-FA1922DFA9A8".toLowerCase();
 const PWM_CHARACTERISTIC = "E95DD822-251D-470A-A062-FA1922DFA9A8".toLowerCase();
+const IO_CHARACTERISTIC = "E95DB9FE-251D-470A-A062FA1922DFA9A8".toLowerCase();
 
 const LED_SERVICE = 'E95DD91D-251D-470A-A062-FA1922DFA9A8'.toLowerCase();
 const LED_STATE = 'E95D7B77-251D-470A-A062-FA1922DFA9A8'.toLowerCase();
@@ -50,10 +52,12 @@ async function pair() {
     console.log('getting service...');
     ioService = await server.getPrimaryService(IO_PIN_SERVICE);
     ledService = await server.getPrimaryService(LED_SERVICE);
+ 
     
     console.log('getting characteristics...');    
     pwmCharacteristic = await ioService.getCharacteristic(PWM_CHARACTERISTIC);
     ledCharacteristic = await ledService.getCharacteristic(LED_STATE);
+    ioCharacteristic = await server.getPrimaryService(IO_CHARACTERISTIC);
     
     // toggle status icon & pair btn
     ['loading', 'success'].map(className => statusIcon.classList.toggle(className));

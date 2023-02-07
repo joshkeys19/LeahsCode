@@ -28,6 +28,7 @@ class EventForm extends React.Component {
     this.removeServoItem = this.removeServoItem.bind(this);
     this.setDisplay = this.setDisplay.bind(this);
     this.testBtnOnClick = this.testBtnOnClick.bind(this);
+    this.pinBtnOnClick = this.pinBtnOnClick.bind(this);
     this.setTiming = this.setTiming.bind(this);
     this.addDisplayItem = this.addDisplayItem.bind(this);
     this.removeDisplayItem = this.removeDisplayItem.bind(this);
@@ -113,6 +114,24 @@ class EventForm extends React.Component {
     }
   }
 
+  pinBtnOnClick(e) {
+    e.preventDefault();
+    if (paired) {
+      let fn =
+        `servoSequence(${JSON.stringify(this.state.servoSequence)}, ${this.state.timeDelay});
+        writeDisplay(${JSON.stringify(this.state.display)}, ${this.state.timeDelay});
+      `;
+      console.log('fn: ', fn);
+      try {
+        eval(fn);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      alert('Please pair your Microbit first!');
+    }
+  }
+
   saveFunction(e) {
     e.preventDefault();
     let fnName = `got${formatLabel(this.props.label)}`;
@@ -157,6 +176,8 @@ class EventForm extends React.Component {
           </div>
           <TimingItem onChange={this.setTiming} value={this.state.timeDelay}></TimingItem>
           <TestBtn onClick={this.testBtnOnClick}></TestBtn>
+          <TestPin PinOnClick={this.pinBtnOnClick}></TestPin>
+          
         </div>
       </form>
     );
@@ -328,6 +349,19 @@ class TestBtn extends React.Component {
     return (
       <button className="test-btn secondary" onClick={this.props.onClick}>
         test
+      </button>
+    )
+  }
+}
+// test display, servo, and timing live
+class TestPin extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <button className="pin-btn secondary" onClick={this.props.onClick}>
+        TogglePin
       </button>
     )
   }

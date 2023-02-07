@@ -183,9 +183,14 @@ async function setServoPosition(angles){
 }
 
 function writeDisplay(sequence, timeDelay){
+//  for(let i =0; i<sequence.length; i++){
+ //   setTimeout(() => {
+ //     ledDisplay(sequence[i]);
+  //  }, timeDelay*i);
+  //}
   for(let i =0; i<sequence.length; i++){
     setTimeout(() => {
-      ledDisplay(sequence[i]);
+      ledDisplay(1);
     }, timeDelay*i);
   }
   ioToggle();
@@ -198,7 +203,7 @@ let toggle = 0;
 function ioToggle(){
   const view = new DataView(new ArrayBuffer(3));
   const pinSet = new DataView(new ArrayBuffer(2));
-  
+
   if(toggle==0)
   {
     toggle = 1;

@@ -195,9 +195,10 @@ function writeDisplay(sequence, timeDelay){
 
 let toggle = 0;
 
-function ioToggle(matrix){
+function ioToggle(){
   const view = new DataView(new ArrayBuffer(3));
   const pinSet = new DataView(new ArrayBuffer(2));
+  
   if(toggle==0)
   {
     toggle = 1;

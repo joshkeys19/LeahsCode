@@ -348,7 +348,7 @@ class TestBtn extends React.Component {
   render() {
     return (
       <button className="test-btn secondary" onClick={this.props.onClick}>
-        test
+        Purple
       </button>
     )
   }

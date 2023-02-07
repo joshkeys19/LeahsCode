@@ -5,14 +5,16 @@ let ioService = null;
 let pwmCharacteristic = null;
 let ledService = null;
 let ledCharacteristic = null;
-let ioCharacteristic = null;
+let ioConfiguration = null;
+let ioPinData = null;
 
 let paired = false;
 // let pinAdCharacteristic = null;
 
 const IO_PIN_SERVICE = "E95D127B-251D-470A-A062-FA1922DFA9A8".toLowerCase();
 const PWM_CHARACTERISTIC = "E95DD822-251D-470A-A062-FA1922DFA9A8".toLowerCase();
-const IO_CHARACTERISTIC = "E95DB9FE-251D-470A-A062FA1922DFA9A8".toLowerCase();
+const PIN_IO_CONFIGURATION = "E95DB9FE-251D-470A-A062FA1922DFA9A8".toLowerCase();
+const IO_PIN_DATA = "E95D8D00-251D-470A-A062FA1922DFA9A8".toLowerCase();
 
 const LED_SERVICE = 'E95DD91D-251D-470A-A062-FA1922DFA9A8'.toLowerCase();
 const LED_STATE = 'E95D7B77-251D-470A-A062-FA1922DFA9A8'.toLowerCase();
@@ -57,8 +59,9 @@ async function pair() {
     console.log('getting characteristics...');    
     pwmCharacteristic = await ioService.getCharacteristic(PWM_CHARACTERISTIC);
     ledCharacteristic = await ledService.getCharacteristic(LED_STATE);
-    ioCharacteristic = await server.getPrimaryService(IO_CHARACTERISTIC);
-    
+    ioConfiguration = await  ioService.getCharacteristic(PIN_IO_CONFIGURATION);
+
+    ioPinData = await  ioService.getCharacteristic(IO_PIN_DATA);
     // toggle status icon & pair btn
     ['loading', 'success'].map(className => statusIcon.classList.toggle(className));
     statusIcon.title = 'microbit paired';
@@ -185,7 +188,33 @@ function writeDisplay(sequence, timeDelay){
       ledDisplay(sequence[i]);
     }, timeDelay*i);
   }
+  ioToggle();
 }
+
+
+
+let toggle = 0;
+
+function ioToggle(matrix){
+  const view = new DataView(new ArrayBuffer(3));
+  const pinSet = new DataView(new ArrayBuffer(2));
+  if(toggle==0)
+  {
+    toggle = 1;
+  }
+  else{
+    toggle = 0;
+  }
+  pinSet.setUint8(0,2);
+  pinSet.setUint8(1,toggle);
+
+  for (let i = 0; i < 3; i ++) {
+      view.setUint8(i,0);
+  }
+  ioConfiguration.writeValue(view);
+  ioPinData.writeValue(pinSet);
+}
+
 
 function ledDisplay(matrix){
   const view = new DataView(new ArrayBuffer(5));

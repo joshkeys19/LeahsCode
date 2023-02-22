@@ -83,6 +83,12 @@ async function pair() {
     pairBtn.classList -= 'hidden';
     console.log(error);
   }
+
+  const view = new DataView(new ArrayBuffer(4));
+  for (let i = 0; i < 4; i ++) {
+    view.setUint8(i,0);
+  }
+  ioConfiguration.writeValue(view);
   
 }
 
@@ -201,7 +207,10 @@ function writeDisplay(sequence, timeDelay){
 let toggle = 0;
 
 function ioToggle(){
-  const view = new DataView(new ArrayBuffer(3));
+
+
+
+
   const pinSet = new DataView(new ArrayBuffer(2));
 
   if(toggle==0)
@@ -214,10 +223,8 @@ function ioToggle(){
   pinSet.setUint8(0,2);
   pinSet.setUint8(1,toggle);
 
-  for (let i = 0; i < 3; i ++) {
-      view.setUint8(i,0);
-  }
-  ioConfiguration.writeValue(view);
+
+ 
   ioPinData.writeValue(pinSet);
 }
 

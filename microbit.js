@@ -59,9 +59,9 @@ async function pair() {
     console.log('getting characteristics...');    
     pwmCharacteristic = await ioService.getCharacteristic(PWM_CHARACTERISTIC);
     ledCharacteristic = await ledService.getCharacteristic(LED_STATE);
-    ioConfiguration = await  ioService.getCharacteristic(PIN_IO_CONFIGURATION);
+    //ioConfiguration = await  ioService.getCharacteristic(PIN_IO_CONFIGURATION);
 
-    ioPinData = await  ioService.getCharacteristic(IO_PIN_DATA);
+   // ioPinData = await  ioService.getCharacteristic(IO_PIN_DATA);
     // toggle status icon & pair btn
     ['loading', 'success'].map(className => statusIcon.classList.toggle(className));
     statusIcon.title = 'microbit paired';
@@ -84,11 +84,11 @@ async function pair() {
     console.log(error);
   }
 
-  const view = new DataView(new ArrayBuffer(4));
-  for (let i = 0; i < 4; i ++) {
-    view.setUint8(i,0);
-  }
-  ioConfiguration.writeValue(view);
+  //const view = new DataView(new ArrayBuffer(4));
+  //for (let i = 0; i < 4; i ++) {
+   // view.setUint8(i,0);
+  //}
+  //ioConfiguration.writeValue(view);
   
 }
 
@@ -225,7 +225,7 @@ function ioToggle(){
 
 
  
-  ioPinData.writeValue(pinSet);
+ // ioPinData.writeValue(pinSet);
 }
 
 
